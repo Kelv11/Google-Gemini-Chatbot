@@ -5,7 +5,7 @@ const toggleThemeButton = document.querySelector("#toggle-theme-button");
 let userMessage = null;
 
 //API configuration
-const API_KEY = "AIzaSyD1YIa49M7zL9gZHEQClNeo0-RwPO0cUW8";
+const API_KEY = "Add your API key here";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
 const loadLocalstorageData = () => {

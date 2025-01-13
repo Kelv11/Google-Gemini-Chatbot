@@ -1,11 +1,24 @@
 const typingForm = document.querySelector(".typing-form");
 const ChatList = document.querySelector(".chat-list");
+const toggleThemeButton = document.querySelector("#toggle-theme-button");
 
 let userMessage = null;
 
 //API configuration
-const API_KEY = "Enter your API key";
+const API_KEY = "AIzaSyD1YIa49M7zL9gZHEQClNeo0-RwPO0cUW8";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+const loadLocalstorageData = () => {
+  const savedChats = localStorage.getItem("savedChats");
+
+  const isLightMode = localStorage.getItem("themecolor") === "light_mode";
+  //apply the stores theme
+  document.body.classList.toggle("light-mode", isLightMode);
+  toggleThemeButton.innerText = isLightMode ? "dark_mode" : "light_mode";
+
+  ChatList.innerHTML = savedChats || "";
+};
+loadLocalstorageData();
 
 //Creates a new message element and return it
 const createMessageElement = (content, ...classes) => {
@@ -25,6 +38,8 @@ const showTypingEffect = (text, textElement) => {
     //if all words are displayed
     if (currentWordIndex === words.length) {
       clearInterval(typingInterval);
+
+      localStorage.setItem("savedChats", ChatList.innerHTML); //saves chats to local storage
     }
   }, 75);
 };
@@ -100,6 +115,12 @@ const handleOutgoingChar = () => {
   typingForm.reset(); //Clears the input field
   setTimeout(showLoadingAnimation, 600); //Showing loading animation after delay
 };
+//Toggle btw light and dark themes
+toggleThemeButton.addEventListener("click", () => {
+  const isLightMode = document.body.classList.toggle("light-mode");
+  localStorage.setItem("themecolor", isLightMode ? "light_mode" : "dark_mode");
+  toggleThemeButton.innerText = isLightMode ? "dark_mode" : "light_mode";
+});
 
 //Prevent default form submission and handle outgoing chat
 typingForm.addEventListener("submit", (e) => {
